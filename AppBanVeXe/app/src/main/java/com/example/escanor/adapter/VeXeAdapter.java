@@ -37,7 +37,7 @@ public class VeXeAdapter extends ArrayAdapter<VeXe>
 
         final VeXe veXe=this.objects.get(position);
 
-        TextView txtSoGhe=item.findViewById(R.id.txtMaSoGhe);
+        TextView txtSoghee=item.findViewById(R.id.textView3);
         TextView txtTrangThai=item.findViewById(R.id.txtTrangThai);
         TextView txtSDT=item.findViewById(R.id.txtSDT);
         TextView txtGiaTien=item.findViewById(R.id.txtGiaGhe);
@@ -45,7 +45,7 @@ public class VeXeAdapter extends ArrayAdapter<VeXe>
         txtTrangThai.setText(veXe.getTrangThai());
         txtSDT.setText(veXe.getSDT());
         txtGiaTien.setText(veXe.getSoTien());
-        txtSoGhe.setText(veXe.getSoGhe());
+        txtSoghee.setText(veXe.getSoGhe());
         return item;
     }
 }

@@ -1,11 +1,15 @@
 package com.example.escanor.appbanvexe;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
@@ -32,13 +36,21 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.BufferUnderflowException;
+import java.nio.ByteOrder;
 import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 
+import static android.content.Context.*;
+
 public class MainActivity extends AppCompatActivity {
+
 
     ListView lvVeXe;
     ArrayList<VeXe> dsVeXe;
@@ -53,14 +65,18 @@ public class MainActivity extends AppCompatActivity {
     String SDT;
     String trangThai;
     String s;
-    TextView txtMaSGhe,txtSoTien,txtTrangThai,txtSDT;
+    TextView txtSoTien,txtTrangThai,txtSDT, txtSoghe;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Server.getWifiAddress(this);
+        Toast.makeText(this,Server.getWifiAddress(this),Toast.LENGTH_LONG).show();
         AddControls();
         AddEvents();
+
 
     }
 
@@ -92,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void AddControls() {
 
+
         TabHost tabHost=findViewById(R.id.tabHost);
         tabHost.setup();
 
@@ -105,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         tab2.setIndicator("Lịch sử");
         tabHost.addTab(tab2);
 
-        txtMaSGhe=findViewById(R.id.txtMaSoGhe);
+        txtSoghe=findViewById(R.id.textView3);
         txtSDT=findViewById(R.id.txtSDT);
         txtSoTien=findViewById(R.id.txtGiaGhe);
         txtTrangThai=findViewById(R.id.txtTrangThai);
@@ -116,8 +133,14 @@ public class MainActivity extends AppCompatActivity {
         lvVeXe.setAdapter(veXeAdapter);
 
 
+        /*Intent intent=getIntent();
+        Bundle bundle= intent.getBundleExtra("Bundle_Travexe");
+        VeXe veXe= (VeXe) bundle.getSerializable("traVeXe");*/
+
+
         lvDatVeXe=findViewById(R.id.lvHistory);
         dsDatVeXe=new ArrayList<>();
+
         datVeXeAdapter=new VeXeAdapter(MainActivity.this,R.layout.itemghe,dsDatVeXe);
         lvDatVeXe.setAdapter(datVeXeAdapter);
 
@@ -150,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<VeXe> ds=new ArrayList<>();
             try
             {
-                URL url=new URL("http://192.168.31.121/server/getVeXe.php");
+                URL url=new URL("http://192.168.1.7/server/getVeXe.php");
                 HttpURLConnection connection= (HttpURLConnection) url.openConnection();
                 InputStreamReader inputStreamReader=new InputStreamReader(connection.getInputStream(),"UTF-8");
                 BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
@@ -187,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if(veXe.trangThai=="1")
                 {
-                    txtMaSGhe.setBackgroundColor(Color.GREEN);
+                    txtSoghe.setTextColor(Color.GREEN);
                 }
                     ds.add(veXe);
                 }

@@ -4,11 +4,13 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/txtMaSoGhe"
-        android:layout_width="88dp"
-        android:layout_height="64dp"
-        android:layout_weight="1"
+        android:id="@+id/textView3"
+        android:layout_width="90dp"
+        android:layout_height="65dp"
         android:text="TextView"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#2cc1d5"
         android:textSize="24sp" />
 
     <LinearLayout
